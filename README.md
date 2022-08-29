@@ -1,4 +1,4 @@
-# project
+# Cytokine predictor
 
 Programme for the prediction of cytokine release based on IEDB database.  
 
