@@ -1,4 +1,4 @@
-name: ML_MHC_Cytokine
+name: ML_Cytokine
 channels:
   - bioconda
   - defaults
