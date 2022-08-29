@@ -22,10 +22,22 @@ conda remove --name ML_MHC_Cytokine --all
 
 #Requirements for running the programme
 
-It is important that you have a connection to PostgreSQL, therefore, you will need to facilitate to the programme a  PostgreSQL username, password, database and port. You have to create in advance a database in your PostgreSQL user.  
+All the information required for the programme is given in the information.txt file. 
 
-It is necessary to give to the programme the name of the protein fasta file or sequence ID that you want to use to predict. You can also give the Uniprot Id of the sequence, and the programme will download it. 
+It is obligatory to give to the programme a PostgreSQL host, database, user, password and port. You have to create in advance a database in your PostgreSQL user.
 
-It is also necessary to give to the programme on what type of cytokine production you want to conduct the prediction, with IL-10 or IFNg. 
+It is also obligatory to give an input to the programme, it can be a fasta file or a uniprot ID. 
+
+To specify the cytokine, you need to fill the prediction line with one or more than one cytokine. In order to develop representative models for cytokine prediction. Cytokines with more than 50 samples are: TNFa, IL-2, IL-4, GM-CSF, IL-17A, IL-17, IL-6, IL-5, IL-13 and IFNg. Last revision done September 2022. 
+
+For control usage, you can add the microorganism name in the microorganism line. The control depends on the amount of data present in IEDB. In the case you don't want a control just write no. 
+
+If you want to first predict MHC class II binding of your sequence for different human alleles, selecting the most immunogenic regions of you sample, you have to write yes in the alleles line. 
+
+If you want to predict MHC class II, you need to give a threshold for the cut off in the prediction. As default, you can write 1 and wait for your results. If there are a lot of sequences you can try at 1.3. 
+
+If you don't want to predict any MHC class II binding, write no in the  alleles and threshold lines. 
+
+You can choose the length of the epitopes, with 18 being the biggest length. As default is 15. You have to write the number in the length lines. 
 
 
