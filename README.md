@@ -40,4 +40,10 @@ If you don't want to predict any MHC class II binding, write no in the  alleles 
 
 You can choose the length of the epitopes, with 18 being the biggest length. As default is 15. You have to write the number in the length lines. 
 
+#Run the programme in Shell 
+
+Run the python programme: 
+
+python3 cytokine_predictor.py
+
 
