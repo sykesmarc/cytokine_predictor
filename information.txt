@@ -5,7 +5,7 @@ password:password
 port:portnumber
 input:file or uniprot ID
 prediction:cytokine1,cytokine2
-microorganism:microorganism name 
+microorganism:microorganism name/no
 alelles:yes/no
-threshold:if alleles yes, give one
+threshold:number/no
 length:15
