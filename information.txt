@@ -1,0 +1,11 @@
+host:hostname
+database:databasename
+user:username
+password:password
+port:portnumber
+input:file or uniprot ID
+prediction:cytokine1,cytokine2
+microorganism:microorganism name 
+alelles:yes/no
+threshold:if alleles yes, give one
+length:15
