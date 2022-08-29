@@ -10,7 +10,7 @@ conda env create -f requeriments.yml
 
 Followed by its activation:
 
-conda activate ML_MHC_Cytokine
+conda activate ML_Cytokine
 
 In case you need to deactivate the environment:
 
@@ -18,7 +18,7 @@ conda deactivate
 
 And in case you need to eliminate the environment:
 
-conda remove --name ML_MHC_Cytokine --all
+conda remove --name ML_Cytokine --all
 
 #Requirements for running the programme
 
