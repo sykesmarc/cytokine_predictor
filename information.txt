@@ -1,3 +1,4 @@
+upload:yes/no
 host:hostname
 database:databasename
 user:username
