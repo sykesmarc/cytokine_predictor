@@ -459,9 +459,10 @@ def do_train_CV_logoplot_models(pwd,input1,cytokine):
 
 #Delete all non-necessary files
 def delete_files(cytokine):
-    os.system("rm AssayTypeList.xml MhcAlleleNameList.xml OrganismList.xml blosum62.txt database.sql generateRandomNonBinders.py model_environment_cpu.yml model_environment_gpu.yml model_from_template.py model_initializer.py parameters.txt requirements_CPU.txt requirements_GPU.txt template1_Train_CV_logoPlot_Apply.txt template2_Train.txt template3_Apply.txt template_empty.txt template_pretrained_model_example.txt test_template.txt train_CV_logoplot_apply.txt")
+    os.system("rm blosum62.txt generateRandomNonBinders.py model_environment_cpu.yml model_environment_gpu.yml model_from_template.py model_initializer.py parameters.txt requirements_CPU.txt requirements_GPU.txt template1_Train_CV_logoPlot_Apply.txt template2_Train.txt template3_Apply.txt template_empty.txt template_pretrained_model_example.txt test_template.txt train_CV_logoplot_apply.txt")
     os.system("rm -rf CNN-PepPred Sequence __pycache__ trainedIEDBmodels Database Test trainedIEDBmodels_TL Example")
-
+    if update == "yes":
+        os.system("rm AssayTypeList.xml MhcAlleleNameList.xml OrganismList.xml database.sql")
 
 #Call functions
 #Download files
