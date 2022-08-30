@@ -536,7 +536,7 @@ for x in cytokine_list:
         do_train_CV_logoplot(pwd,input1,x)
         os.system("rm "+x.strip("/")+"release.csv training_"+x.strip("/")+"release.txt")
     if update == "no":
-        os.system("cp "+pwd+"/Cytokine_models/* "+pwd+"/trainedIEDBmodels")
+        os.system("cp "+pwd+"/Cytokines_models/* "+pwd+"/trainedIEDBmodels")
         #Do the machine learning
         print("TRAINING OF: "+x)
         do_train_CV_logoplot_models(pwd,input1,x)
