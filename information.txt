@@ -1,4 +1,4 @@
-upload:yes/no
+update:yes/no
 host:hostname
 database:databasename
 user:username
