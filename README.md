@@ -1,8 +1,6 @@
-# Cytokine predictor
+# Cytokine predictor program
 
-Code repository for the Cytokine release predictor programme. 
-
-We present a cytokine release predictor programme based solely on epitope's sequence. 
+Code repository for the Cytokine release predictor programme. We present a cytokine release predictor programme based solely on epitope's sequence. 
 
 ## Abstract 
 
