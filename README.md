@@ -16,7 +16,7 @@ You can get the code using this command:
 git clone https://github.com/sykesmarc/cytokine_predictor
 ```
 
-## Running the programme: Environment management
+## Environment management
 
 In order to run the program, an environment needs to be set with all the modules required. All modules are found in the requeriments.yml file. 
 
@@ -36,7 +36,7 @@ And in case you need to eliminate the environment:
 ```
 conda remove --name ML_Cytokine --all
 ```
-## Running the programme: instructions
+## Instructions
 
 The user also needs to modify the file __information.txt__ in order to give the desired instructions to the program.
 
@@ -58,7 +58,16 @@ In order to run the programme you need to run this command once you have set the
 python3 cytokine_predictor.py
 ```
 
-## Output for cytokine prediction using the models 
+## Output for cytokine prediction
 
 The output of the program consists of a file named __predictedoutcome.txt__, a csv file with the results of the prediction. This file contains a list of peptides, which come from the input sequences, that have been predicted to produce that particular cytokine, ordered by the predicted outcome. The peptides more likely to induce cytokine production have a higher predicted outcome and appear at the top of the file. This output also gives essential information on the peptides: the protein or sequence they come from, the start and end of the peptide in that protein/sequence, and its characteristic core (reminiscent of the HLA class II binding core). 
+
+## Updating the models
+
+The user can also choose to update the models. To this end, the program downloads the IEDB database, parsers all its xml files and filters the data. After that, it creates a local PostgreSQL table and stores the curated data in it if the models are being generated for the first time, or adds any new data found in the IEDB to the existing PostgreSQL table if the user had already run this process before. Before updating the models for the first time, the user should create a database for its PostgreSQL user. The information required for the PostgreSQL connection is given in the information.txt file.Each updated model will be stored in the folder where the program is running. The performance of the new models can be seen in the cross-validation results provided with the output. 
+
+## Previous prediction of MHC class II binding
+
+The program can also run the CNN-PepPred tool, before cytokine-release prediction, to make a prediction of MHC II binding for the input peptides and for different HLA class II alleles if such analysis has not been done previously with another tool. Then, the program filters the output of each prediction with a given threshold to obtain the peptides predicted to be most immunogenic. These filtered results are subsequently used as input for the prediction of cytokine release.  
+
 
