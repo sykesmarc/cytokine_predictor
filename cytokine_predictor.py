@@ -5,7 +5,6 @@ import re
 import xml.etree.cElementTree as et
 import glob
 import shutil
-import os
 import psycopg2
 import sys
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
