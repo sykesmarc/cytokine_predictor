@@ -38,7 +38,7 @@ conda remove --name ML_Cytokine --all
 
 The user also needs to modify the file __information.txt__ in order to give the desired instructions to the program.
 
-- `update:` Indicates if the models have to be updated (yes) or if the program can use the already built models (no). 
+- `update:` Indicates if the models have to be updated (yes) or if the program can use the already built models (no). If you choose to update the models, the new models will be saved in the Results directory. 
 - `host, database, user, password, port:` In the case of a model update, the user must give a PostgreSQL host, database, user, password and port. 
 - `input:` Refers to a protein sequence given in a fasta file or uniport ID, which will be used as input for the program. 
 - `prediction:` Indicates the program which type of cytokine release prediction assay the user wants to conduct. The cytokine must be written this way: (GM-CSF, IFNg, IL-2, IL-4, IL-5, IL-6, IL-10, IL-13, IL-17A, IL-17, TNFa)
