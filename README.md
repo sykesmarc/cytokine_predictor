@@ -38,13 +38,13 @@ conda remove --name ML_Cytokine --all
 
 The user also needs to modify the file __information.txt__ in order to give the desired instructions to the program.
 
-- `update:` Indicates if the models have to be updated (yes) or if the program can use the already built models (no). If you choose to update the models, the new models will be saved in the Results directory. 
+- `update:`  Indicates if the models have to be updated (yes) or if the program can use the already built models (no). If you choose to update the models, the new models will be saved in the Results directory. 
 - `host, database, user, password, port:` In the case of a model update, the user must give a PostgreSQL host, database, user, password and port. 
 - `input:` Refers to a protein sequence given in a fasta file or uniport ID, which will be used as input for the program. 
 - `prediction:` Indicates the program which type of cytokine release prediction assay the user wants to conduct. The cytokine must be written this way: (GM-CSF, IFNg, IL-2, IL-4, IL-5, IL-6, IL-10, IL-13, IL-17A, IL-17, TNFa)
 - `microorganism:` Indicates the program if the user wants to add a control dataset to the prediction, if so, the user must give a microorganism name and the update line have to be yes. If the user does not want to add any control has to specify it with no.  
 - `alleles:` Indicates if the user wants to make a previous prediction of MHC class II binding before cytokine prediction(yes) or no. 
-- `threshold:` When having a previous prediction of MHC class II binding, a threshold for the selection of immunogenic peptides must be given by the user (the most common is 1). If there is no previous prediction of MHC class II binding indicate it with a no. 
+- `threshold:` When having a previous prediction of MHC class II binding, a threshold for the selection of immunogenic peptides must be given by the user (commonly from 0.8 to 1). If there is no previous prediction of MHC class II binding indicate it with a no. 
 - `length:` Indicates the length of epitopes in the prediction of cytokine release. The maximum is 18, and the recommended length is 15.
 
 
