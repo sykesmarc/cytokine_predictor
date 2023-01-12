@@ -1,4 +1,3 @@
-
 #Imports
 import os
 import re
@@ -352,15 +351,36 @@ def extract_from_psql(host1, database1, user1, password1, port1, cytokine):
                                 )
     con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     cursor = con.cursor()
-    #Obtain CSV
+    #Obtain CSV positive
     fid = open(cytokine+'release.csv', 'w',encoding="utf-8")
     sql = "COPY (SELECT * FROM Epitopes WHERE mhctype = 'MHC II' AND assaytype = '"+cytokine+" release' and qualitativemeasurements = 'Positive') TO STDOUT WITH CSV HEADER;"
     cursor.copy_expert(sql, fid)
+    #Obtain CSV negative
+    fid1 = open(cytokine+'negative_release.csv', 'w',encoding="utf-8")
+    sql1 = "COPY (SELECT * FROM Epitopes WHERE mhctype = 'MHC II' AND assaytype = '"+cytokine+" release' and qualitativemeasurements = 'Negative') TO STDOUT WITH CSV HEADER;"
+    cursor.copy_expert(sql1, fid1)
     con.close()
 
 #Extract sequences and eliminate repited ones
-def extract_sequences(cytokine):
+def extract_pos_sequences(cytokine):
     f = open(cytokine.strip("/")+"release.csv", "rt", encoding="utf-8")
+    list = []
+    while True:
+        line = f.readline()
+        if not line: break
+        sequence = line.split(",")[1]
+        mic = line.split(",")[5]
+        if sequence not in list:
+            if sequence != "NA":
+                if sequence != "linearsequence":
+                    if pathogen not in mic:
+                        list.append(sequence)
+    f.close()
+    return list
+
+#Extract negative seq and eliminate repited ones
+def extract_neg_sequences(cytokine):
+    f = open(cytokine.strip("/")+'negative_release.csv', "rt", encoding="utf-8")
     list = []
     while True:
         line = f.readline()
@@ -421,24 +441,51 @@ def epitopes_validating(cytokine):
         f2.write(input_epitopes[x]+"\n")
     f2.close()
 
-#Generate training file
-def generate_training_file(list,seqNeg,cytokine):
-    f1 = open("training_"+cytokine.strip("/")+"release.txt", "wt", encoding="utf-8")
-    f1.write("Peptide,Outcome")
-    f1.write("\n")
-    for x in list:
-        f1.write(x+",1")
-        f1.write("\n")
-    for x in seqNeg:
-        f1.write(x+",0")
-        f1.write("\n")
-    f1.close()
-
 #Generate random binders
-def generate_random_binders(pwd,list,cytokine):
-    from generateRandomNonBinders import generateRandomNonBinders
-    seqNeg = generateRandomNonBinders(pwd+"/Sequence", seq = list, N = len(list), maxFiles = 2)
-    generate_training_file(list,seqNeg,cytokine)
+def generate_random_binders(pwd,list_pos,list_neg,cytokine):
+    #Import the function to generate randon binders
+    #FIRST CONDITION: If the lenght of the negative list is equal to the positive list, we don't need to generate random binders
+    if len(list_neg) == len(list_pos):
+        f1 = open("training_"+cytokine.strip("/")+"release.txt", "wt", encoding="utf-8")
+        f1.write("Peptide,Outcome")
+        f1.write("\n")
+        for x in list_pos: #We write all the positive sequences to the file
+            f1.write(x+",1")
+            f1.write("\n")
+        for x in list_neg: #We write all the negative sequences to the file
+            f1.write(x+",0")
+            f1.write("\n")
+        f1.close()
+    #SECOND CONDITION: If the length of the positive list is longer than the negative list
+    elif len(list_neg) < len(list_pos):
+        num_of_seq = int(len(list_pos))-int(len(list_neg))
+        from generateRandomNonBinders import generateRandomNonBinders
+        seqNeg = generateRandomNonBinders(pwd+"/Sequence", seq = list_pos, N = num_of_seq , maxFiles = 2) #Generate all the random binders necessary
+        f1 = open("training_"+cytokine.strip("/")+"release.txt", "wt", encoding="utf-8")
+        f1.write("Peptide,Outcome")
+        f1.write("\n")
+        for x in list_pos: #Wrtie all the positive sequences to the file
+            f1.write(x+",1")
+            f1.write("\n")
+        for x in list_neg: #Write all the negative sequences to the file
+            f1.write(x+",0")
+            f1.write("\n")
+        for x in seqNeg: #Complement all the negative sequences to the file
+            f1.write(x+",0")
+            f1.write("\n")
+        f1.close()
+    #THIRD CONDITION: If the list of negative binders is longer than the positive binders.
+    elif len(list_neg) > len(list_pos):
+        f1 = open("training_"+cytokine.strip("/")+"release.txt", "wt", encoding="utf-8")
+        f1.write("Peptide,Outcome")
+        f1.write("\n")
+        for x in list_pos: #Write all the positive binders
+            f1.write(x+",1")
+            f1.write("\n")
+        for x in range(len(list_pos)): #Write all the negative binders
+            f1.write(list_neg[x]+",0")
+            f1.write("\n")
+        f1.close()
 
 #Do the ML with update
 def do_train_CV_logoplot(pwd,input1,cytokine):
@@ -488,7 +535,6 @@ if update == "yes":
     remove_lines()
     #Enter PSQL, Create table, insert into table
     enter_psql(host1, database1, user1, password1, port1)
-
 #Get PWD
 pwd = sp.getoutput('pwd')
 
@@ -525,21 +571,23 @@ for x in cytokine_list:
         #Extract required information from PSQL
         extract_from_psql(host1, database1, user1, password1, port1, x)
         #Extract sequences for training
-        list = extract_sequences(x)
+        list_pos = extract_pos_sequences(x)
+        list_neg = extract_neg_sequences(x)
         #Insert epitopes to input for validation of the programme
         if pathogen != "NO":
             epitopes_validating(x)
         #Generate random binders and generate training file
-        generate_random_binders(pwd, list, x)
+        generate_random_binders(pwd, list_pos,list_neg, x)
         #Do the machine learning
         print("TRAINING OF: "+x)
         do_train_CV_logoplot(pwd,input1,x)
-        os.system("rm "+x.strip("/")+"release.csv training_"+x.strip("/")+"release.txt")
+        os.system("rm "+x.strip("/")+"release.csv "+ x.strip("/")+"negative_release.csv training_"+x.strip("/")+"release.txt")
     if update == "no":
         os.system("cp -r "+pwd+"/Cytokines_models/* "+pwd+"/trainedIEDBmodels")
         #Do the machine learning
         print("TRAINING OF: "+x)
         do_train_CV_logoplot_models(pwd,input1,x)
+
 
 #Remove files all not-wanted files
 delete_files(x)
